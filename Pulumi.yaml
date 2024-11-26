@@ -1,4 +1,4 @@
-name: uebung5
+name: pulumi-hello-world
 description: A minimal Azure Native Python Pulumi program
 runtime:
   name: python
