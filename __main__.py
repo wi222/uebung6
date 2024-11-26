@@ -29,7 +29,7 @@ if os.path.exists('app'):
 else:
     raise FileNotFoundError("Das Verzeichnis 'app' wurde nicht gefunden.")
 
-# Hochladen einer Datei in den Blob-Container (überschreibt alte Datei)
+# Hochladen einer Datei in den Blob-Container
 app_blob = storage.Blob("webappzip",
     resource_group_name=resource_group.name,
     account_name=storage_account.name,
@@ -72,14 +72,6 @@ web_app = web.WebApp("webapp",
             web.NameValuePairArgs(name="APPINSIGHTS_INSTRUMENTATIONKEY", value=app_insights.instrumentation_key),
         ],
         linux_fx_version="PYTHON|3.11",
-    )
-)
-
-# Web-App neu starten, um sicherzustellen, dass die neuen Inhalte verwendet werden
-pulumi.Output.all(web_app.name, resource_group.name).apply(
-    lambda args: web.WebApps.restart(
-        resource_group_name=args[1],
-        name=args[0]
     )
 )
 
