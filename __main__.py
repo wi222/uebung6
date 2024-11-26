@@ -1,5 +1,6 @@
 import pulumi
 import os
+import shutil
 from pulumi_azure_native import resources, storage, web, insights
 from pulumi import FileAsset
 
@@ -23,9 +24,12 @@ blob_container = storage.BlobContainer("blobcontainer",
 )
 
 # ZIP-Datei der Anwendung erstellen
-os.system('cd app && zip -r ../webapp.zip .')
+if os.path.exists('app'):
+    shutil.make_archive('webapp', 'zip', 'app')
+else:
+    raise FileNotFoundError("Das Verzeichnis 'app' wurde nicht gefunden.")
 
-# Hochladen einer Datei in den Blob-Container
+# Hochladen einer Datei in den Blob-Container (überschreibt alte Datei)
 app_blob = storage.Blob("webappzip",
     resource_group_name=resource_group.name,
     account_name=storage_account.name,
@@ -65,8 +69,17 @@ web_app = web.WebApp("webapp",
     site_config=web.SiteConfigArgs(
         app_settings=[
             web.NameValuePairArgs(name="WEBSITE_RUN_FROM_PACKAGE", value=blob_url),
+            web.NameValuePairArgs(name="APPINSIGHTS_INSTRUMENTATIONKEY", value=app_insights.instrumentation_key),
         ],
         linux_fx_version="PYTHON|3.11",
+    )
+)
+
+# Web-App neu starten, um sicherzustellen, dass die neuen Inhalte verwendet werden
+pulumi.Output.all(web_app.name, resource_group.name).apply(
+    lambda args: web.WebApps.restart(
+        resource_group_name=args[1],
+        name=args[0]
     )
 )
 
