@@ -12,7 +12,7 @@ if os.path.exists(zip_file_path):
     os.remove(zip_file_path)
 
 # ZIP-Datei der Anwendung erstellen
-if os.path.exists('clco-demo'):
+if os.path.exists('app'):
     shutil.make_archive('webapp', 'zip', 'app')
     print(f"ZIP-Datei '{zip_file_path}' wurde erfolgreich erstellt.")
 else:
