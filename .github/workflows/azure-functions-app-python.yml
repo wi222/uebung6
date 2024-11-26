@@ -6,7 +6,7 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: 'uebung5'   # Set this to your web app name on Azure
-  AZURE_WEBAPP_PACKAGE_PATH: './clco-demo'  # Set this to the path to your web app project
+  AZURE_WEBAPP_PACKAGE_PATH: '.'          # Set this to the path to your web app project, defaults to the repository root
   PYTHON_VERSION: '3.9'                   # Set this to the python version to use (e.g. '3.6', '3.7', '3.8')
 
 jobs:
