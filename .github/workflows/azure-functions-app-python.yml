@@ -51,6 +51,15 @@ jobs:
         pulumi config set azure:clientSecret ${{ secrets.AZURE_CLIENT_SECRET }} --secret
         pulumi config set azure:tenantId ${{ secrets.AZURE_TENANT_ID }}
 
+    - name: Create ZIP file
+      run: |
+        if [ -d "clco-demo" ]; then
+          zip -r webapp.zip clco-demo
+        else
+          echo "Directory 'clco-demo' does not exist"
+          exit 1
+        fi
+        
     - name: Pulumi Up
       env:
         ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
