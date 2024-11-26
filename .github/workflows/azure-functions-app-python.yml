@@ -51,7 +51,9 @@ jobs:
         pulumi config set azure:tenantId ${{ secrets.AZURE_TENANT_ID }}
 
     - name: Pulumi Up
-      run: pulumi up --yes
+      run: |
+        # Aktualisieren der Blob-Datei und Bereitstellung
+        pulumi up --yes
       env:
         ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
