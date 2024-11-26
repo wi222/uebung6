@@ -19,7 +19,7 @@ else:
 
 
 # Erstellen einer Ressourcengruppe
-resource_group = resources.ResourceGroup("uebung4-resourcegroup", location="westus")
+resource_group = resources.ResourceGroup("uebung4-resourcegroup", location="eastus")
 
 # Erstellen eines Storage-Accounts
 storage_account = storage.StorageAccount("storageaccount",
@@ -37,7 +37,7 @@ blob_container = storage.BlobContainer("blobcontainer",
     public_access="Blob"
 )
 
-# Hochladen einer Datei in den Blob-Container
+# Hochladen einer Datei in den Blob-Container  
 app_blob = storage.Blob("webappzip",
     resource_group_name=resource_group.name,
     account_name=storage_account.name,
