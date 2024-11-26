@@ -24,6 +24,8 @@ jobs:
           pip install pulumi pulumi-azure-native
 
       - name: Pulumi Login
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
         run: pulumi login
 
       - name: Pulumi Stack Select
@@ -34,7 +36,7 @@ jobs:
           pulumi config set azure:location westus2
           pulumi config set azure:subscriptionId ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           pulumi config set azure:clientId ${{ secrets.AZURE_CLIENT_ID }}
-          pulumi config set azure:clientSecret ${{ secrets.AZURE_CLIENT_SECRET }}
+          pulumi config set azure:clientSecret ${{ secrets.AZURE_CLIENT_SECRET }} --secret
           pulumi config set azure:tenantId ${{ secrets.AZURE_TENANT_ID }}
 
       - name: Pulumi Up
