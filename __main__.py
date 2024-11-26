@@ -25,7 +25,7 @@ else:
     raise FileNotFoundError("Die ZIP-Datei wurde nicht erstellt oder ist leer.")
 
 # Erstellen einer Ressourcengruppe
-resource_group = resources.ResourceGroup("uebung4-resourcegroup", location="canadacentral")
+resource_group = resources.ResourceGroup("uebung4-resourcegroup", location="australiaeast")
 
 # Erstellen eines Storage-Accounts
 storage_account = storage.StorageAccount("storageaccount",
