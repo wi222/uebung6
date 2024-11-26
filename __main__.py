@@ -4,7 +4,7 @@ from pulumi_azure_native import resources, storage, web, insights
 from pulumi import FileAsset
 
 # Erstellen einer Ressourcengruppe
-resource_group = resources.ResourceGroup("uebung4-resourcegroup", location="westindia")
+resource_group = resources.ResourceGroup("uebung4-resourcegroup", location="eastasia")
 
 # Erstellen eines Storage-Accounts
 storage_account = storage.StorageAccount("storageaccount",
@@ -43,8 +43,8 @@ app_service_plan = web.AppServicePlan("serviceplan",
     kind="Linux",
     reserved=True,
     sku=web.SkuDescriptionArgs(
-        tier="Free",
-        name="F1"
+        tier="Basic",
+        name="B1",
     )
 )
 
