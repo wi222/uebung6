@@ -4,6 +4,19 @@ import shutil
 from pulumi_azure_native import resources, storage, web, insights
 from pulumi import FileAsset
 
+# ZIP-Datei der Anwendung erstellen
+zip_file_path = 'webapp.zip'
+
+# Löschen der vorhandenen ZIP-Datei, falls vorhanden
+if os.path.exists(zip_file_path):
+    os.remove(zip_file_path)
+
+# ZIP-Datei der Anwendung erstellen
+if os.path.exists('app'):
+    shutil.make_archive('webapp', 'zip', 'app')
+else:
+    raise FileNotFoundError("Das Verzeichnis 'app' wurde nicht gefunden.")
+
 # Erstellen einer Ressourcengruppe
 resource_group = resources.ResourceGroup("uebung4-resourcegroup", location="eastasia")
 
@@ -22,12 +35,6 @@ blob_container = storage.BlobContainer("blobcontainer",
     resource_group_name=resource_group.name,
     public_access="Blob"
 )
-
-# ZIP-Datei der Anwendung erstellen
-if os.path.exists('app'):
-    shutil.make_archive('webapp', 'zip', 'app')
-else:
-    raise FileNotFoundError("Das Verzeichnis 'app' wurde nicht gefunden.")
 
 # Hochladen einer Datei in den Blob-Container
 app_blob = storage.Blob("webappzip",

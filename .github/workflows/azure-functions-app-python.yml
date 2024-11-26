@@ -5,9 +5,9 @@ on:
     branches: ["main"]
 
 env:
-  AZURE_WEBAPP_NAME: 'uebung5'
-  AZURE_WEBAPP_PACKAGE_PATH: '.'
-  PYTHON_VERSION: '3.9'
+  AZURE_WEBAPP_NAME: 'uebung5'   # Set this to your web app name on Azure
+  AZURE_WEBAPP_PACKAGE_PATH: '.'          # Set this to the path to your web app project, defaults to the repository root
+  PYTHON_VERSION: '3.9'                   # Set this to the python version to use (e.g. '3.6', '3.7', '3.8')
 
 jobs:
   build-and-deploy:
@@ -25,21 +25,19 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Create ZIP file
-      run: |
-        cd app
-        zip -r ../webapp.zip .
-      shell: bash
+        pip install pulumi pulumi-azure-native
 
     - name: Pulumi Login
       env:
         PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
       run: pulumi login
 
-    - name: Pulumi Stack Init or Select
-      run: |
-        pulumi stack select dev || pulumi stack init dev
+    - name: Pulumi Destroy
+      run: pulumi destroy --yes
+
+    - name: Pulumi Stack Select
+      run: pulumi stack select dev
+
     - name: Pulumi Config Set
       run: |
         pulumi config set azure:location westus2
@@ -47,12 +45,6 @@ jobs:
         pulumi config set azure:clientId ${{ secrets.AZURE_CLIENT_ID }}
         pulumi config set azure:clientSecret ${{ secrets.AZURE_CLIENT_SECRET }} --secret
         pulumi config set azure:tenantId ${{ secrets.AZURE_TENANT_ID }}
+
     - name: Pulumi Up
-      run: |
-        # Aktualisieren der Blob-Datei und Bereitstellung
-        pulumi up --yes
-      env:
-        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-        ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      run: pulumi up --yes
