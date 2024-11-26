@@ -19,7 +19,7 @@ else:
 
 
 # Erstellen einer Ressourcengruppe
-resource_group = resources.ResourceGroup("uebung4-resourcegroup", location="eastus")
+resource_group = resources.ResourceGroup("uebung4-resourcegroup", location="canadacentral")
 
 # Erstellen eines Storage-Accounts
 storage_account = storage.StorageAccount("storageaccount",
@@ -55,8 +55,8 @@ app_service_plan = web.AppServicePlan("serviceplan",
     kind="Linux",
     reserved=True,
     sku=web.SkuDescriptionArgs(
-        tier="Standard",  # Ändern Sie die Preisstufe hier
-        name="S1",
+       tier="Basic",
+        name="B1",
     )
 )
 
