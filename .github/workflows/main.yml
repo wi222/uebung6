@@ -6,38 +6,19 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.ARM_CLIENT_ID }}
+        client-secret: ${{ secrets.ARM_CLIENT_SECRET }}
+        tenant-id: ${{ secrets.ARM_TENANT_ID }}
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pulumi pulumi-azure-native
-
-      - name: Pulumi Login
-        env:
-          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
-        run: pulumi login
-
-      - name: Pulumi Stack Select
-        run: pulumi stack select dev
-
-      - name: Pulumi Config Set
-        run: |
-          pulumi config set azure:location westus2
-          pulumi config set azure:subscriptionId ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          pulumi config set azure:clientId ${{ secrets.AZURE_CLIENT_ID }}
-          pulumi config set azure:clientSecret ${{ secrets.AZURE_CLIENT_SECRET }}
-          pulumi config set azure:tenantId ${{ secrets.AZURE_TENANT_ID }}
-
-      - name: Pulumi Up
-        run: pulumi up --yes
+    - name: Run Pulumi
+      run: |
+        pulumi up --yes
