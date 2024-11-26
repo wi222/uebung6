@@ -18,7 +18,7 @@ else:
     raise FileNotFoundError("Das Verzeichnis 'app' wurde nicht gefunden.")
 
 # Erstellen einer Ressourcengruppe
-resource_group = resources.ResourceGroup("uebung4-resourcegroup", location="southeastasia")
+resource_group = resources.ResourceGroup("uebung4-resourcegroup", location="francecentral")
 
 # Erstellen eines Storage-Accounts
 storage_account = storage.StorageAccount("storageaccount",
@@ -54,8 +54,8 @@ app_service_plan = web.AppServicePlan("serviceplan",
     kind="Linux",
     reserved=True,
     sku=web.SkuDescriptionArgs(
-        tier="Basic",
-        name="B1",
+        tier="Standard",  # Ändern Sie die Preisstufe hier
+        name="S1",
     )
 )
 
