@@ -6,7 +6,7 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: 'uebung5'   # Set this to your web app name on Azure
-  AZURE_WEBAPP_PACKAGE_PATH: './uebung5/webapp.zip'  # Set this to the path to your web app project
+  AZURE_WEBAPP_PACKAGE_PATH: '.'  # Set this to the path to your web app project
   PYTHON_VERSION: '3.9'                   # Set this to the python version to use (e.g. '3.6', '3.7', '3.8')
 
 jobs:
@@ -50,18 +50,6 @@ jobs:
         pulumi config set azure:clientId ${{ secrets.AZURE_CLIENT_ID }}
         pulumi config set azure:clientSecret ${{ secrets.AZURE_CLIENT_SECRET }} --secret
         pulumi config set azure:tenantId ${{ secrets.AZURE_TENANT_ID }}
-
-    - name: Create ZIP file
-      run: |
-        mkdir -p uebung5
-        if [ -d "clco-demo" ]; then
-          zip -r uebung5/webapp.zip clco-demo
-          echo "ZIP-Datei 'uebung5/webapp.zip' wurde erfolgreich erstellt."
-          ls -lh uebung5/webapp.zip
-        else
-          echo "Directory 'clco-demo' does not exist"
-          exit 1
-        fi
 
     - name: Pulumi Up
       env:

@@ -13,7 +13,7 @@ if os.path.exists(zip_file_path):
 
 # ZIP-Datei der Anwendung erstellen
 if os.path.exists('clco-demo'):
-    shutil.make_archive('webapp', 'zip', 'clco-demo')
+    shutil.make_archive('webapp', 'zip', 'app')
     print(f"ZIP-Datei '{zip_file_path}' wurde erfolgreich erstellt.")
 else:
     raise FileNotFoundError("Das Verzeichnis 'clco-demo' wurde nicht gefunden.")
