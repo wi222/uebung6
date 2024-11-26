@@ -12,13 +12,14 @@ if os.path.exists(zip_file_path):
     os.remove(zip_file_path)
 
 # ZIP-Datei der Anwendung erstellen
-if os.path.exists('app'):
+if os.path.exists('clco-demo'):
     shutil.make_archive('webapp', 'zip', 'app')
 else:
-    raise FileNotFoundError("Das Verzeichnis 'app' wurde nicht gefunden.")
+    raise FileNotFoundError("Das Verzeichnis 'clco-demo' wurde nicht gefunden.")
+
 
 # Erstellen einer Ressourcengruppe
-resource_group = resources.ResourceGroup("uebung4-resourcegroup", location="francecentral")
+resource_group = resources.ResourceGroup("uebung4-resourcegroup", location="westus")
 
 # Erstellen eines Storage-Accounts
 storage_account = storage.StorageAccount("storageaccount",
@@ -59,14 +60,7 @@ app_service_plan = web.AppServicePlan("serviceplan",
     )
 )
 
-# Application Insights erstellen
-app_insights = insights.Component("appinsights",
-    resource_group_name=resource_group.name,
-    location=resource_group.location,
-    application_type="web",
-    kind="web",
-    ingestion_mode="ApplicationInsights"
-)
+
 
 # Erstellen einer Web-App
 web_app = web.WebApp("webapp",
@@ -76,7 +70,6 @@ web_app = web.WebApp("webapp",
     site_config=web.SiteConfigArgs(
         app_settings=[
             web.NameValuePairArgs(name="WEBSITE_RUN_FROM_PACKAGE", value=blob_url),
-            web.NameValuePairArgs(name="APPINSIGHTS_INSTRUMENTATIONKEY", value=app_insights.instrumentation_key),
         ],
         linux_fx_version="PYTHON|3.11",
     )
